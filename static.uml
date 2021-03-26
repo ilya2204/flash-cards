@@ -1,0 +1,77 @@
+ass Card {
+   input: String
+   output: String
+   getSolutions(): List<Solution>
+}
+
+class CardLibrary {
+   allCards(): List<Card>
+   create(input: String, output: String): Card
+   update(id: Integer, input: String, output: String): Card
+   delete(id: Integer)
+   get(id: Integer): Card
+
+}
+
+class Solution {
+   time: DateTime
+   card: Card
+   result: String
+}
+
+class SolutionLibrary {
+   allSolution(): List<Card>
+   create(input: String, card: Card): Solution
+   get(id: Integer): Solution
+   getCardSolutions(card: Card): List<Solution>
+
+}
+
+interface CardPicker {
+   getCard(): Card
+}
+
+class SpacedRepetitionCardPicker {
+   getCard(): Card
+}
+
+interface InputAnalyzer {
+   analyzeInput(card: Card, input: Strinf): String
+}
+
+class IsOkAnalyzer {
+   analyzeInput(card: Card, input: Strinf): String
+}
+interface Callable {
+call(): Integer
+}
+
+class ConsoleWorker {
+analyzer: InputAnalyzer
+picker: CardPicker
+call(): Integer
+
+}
+
+
+Callable <|.. ConsoleWorker
+
+CardPicker <|.. SpacedRepetitionCardPicker
+
+Card"1" o-- "*" Solution
+
+Card --> CardPicker
+Card --> CardLibrary
+Card --> InputAnalyzer
+Card --> SolutionLibrary
+Solution --> SolutionLibrary
+IsOkAnalyzer ..|> InputAnalyzer
+
+ InputAnalyzer --> ConsoleWorker 
+ CardPicker --> ConsoleWorker 
+
+
+
+
+Solution <-- Card
+@enduml
