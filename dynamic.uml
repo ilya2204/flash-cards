@@ -1,37 +1,42 @@
-ctor User
+@startuml
+Actor User
 User -> ConsoleWorker: request card
 ConsoleWorker -> SpacedRepetitionCardPicker : request optimal card to show
-Database CardLibrary
-SpacedRepetitionCardPicker -> CardLibrary: take available cards
-CardLibrary -> SpacedRepetitionCardPicker:  return available cards
-participant IsOkAnalyzer
-Database SolutionLibrary
-SpacedRepetitionCardPicker -> SolutionLibrary : take cards solutions
-SolutionLibrary -> SpacedRepetitionCardPicker : return cards solutions
+Database DbCardLibrary
+SpacedRepetitionCardPicker -> DbCardLibrary: take available cards
+DbCardLibrary -> SpacedRepetitionCardPicker:  return available cards
+participant InputHandler
+participant IsOkReportGenerator
+Database DbSolutionLibrary
+SpacedRepetitionCardPicker -> DbSolutionLibrary : take cards solutions
+DbSolutionLibrary -> SpacedRepetitionCardPicker : return cards solutions
 SpacedRepetitionCardPicker-> ConsoleWorker : return optimal card
 ConsoleWorker -> User : show optimal card
 User -> ConsoleWorker: enter input
-ConsoleWorker -> IsOkAnalyzer : request feedback
+ConsoleWorker -> InputHandler : request input handle
 
-IsOkAnalyzer -> SolutionLibrary : request last solutions on this card
-SolutionLibrary -> IsOkAnalyzer: return solutions
-IsOkAnalyzer -> SolutionLibrary : create solution
-IsOkAnalyzer -> ConsoleWorker: return feedback
+InputHandler -> IsOkReportGenerator: request feedback
+IsOkReportGenerator -> DbSolutionLibrary : request last solutions on this card
+DbSolutionLibrary -> IsOkReportGenerator: return solutions
+InputHandler <- IsOkReportGenerator : return feedback
+
+InputHandler -> DbSolutionLibrary : request solution creation
+InputHandler -> ConsoleWorker: return feedback
 ConsoleWorker -> User : show feedback
 User -> ConsoleWorker: request card solution
 ConsoleWorker -> User: show card solution
 User -> ConsoleWorker: request card creation
 ConsoleWorker -> User : request card content
 User -> ConsoleWorker: enter card content
-ConsoleWorker -> CardLibrary: request card creation
-CardLibrary -> ConsoleWorker : return created card
+ConsoleWorker -> DbCardLibrary: request card creation
+DbCardLibrary -> ConsoleWorker : return created card
 User -> ConsoleWorker: request card delete
 ConsoleWorker -> User: show existing cards
 User -> ConsoleWorker: picking card
-ConsoleWorker -> CardLibrary: request card deletion
+ConsoleWorker -> DbCardLibrary: request card deletion
 User -> ConsoleWorker: request card update
 ConsoleWorker -> User: show existing cards
 User -> ConsoleWorker: picking card and enter new data
-ConsoleWorker -> CardLibrary: request card update
-CardLibrary -> ConsoleWorker: return updated card
+ConsoleWorker -> DbCardLibrary: request card update
+DbCardLibrary -> ConsoleWorker: return updated card
 @enduml
