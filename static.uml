@@ -1,11 +1,12 @@
-ass Card {
+@startuml
+class Card {
    input: String
    output: String
    getSolutions(): List<Solution>
 }
 
-class CardLibrary {
-   allCards(): List<Card>
+class DbCardLibrary {
+   getActiveCards(): List<Card>
    create(input: String, output: String): Card
    update(id: Integer, input: String, output: String): Card
    delete(id: Integer)
@@ -13,19 +14,36 @@ class CardLibrary {
 
 }
 
+interface CardLibrary {
+   getActiveCards(): List<Card>
+   create(input: String, output: String): Card
+   update(id: Integer, input: String, output: String): Card
+   delete(id: Integer)
+   get(id: Integer): Card
+
+}
+
+ DbCardLibrary ..|> CardLibrary
+
 class Solution {
    time: DateTime
    card: Card
    result: String
 }
 
-class SolutionLibrary {
-   allSolution(): List<Card>
+interface SolutionLibrary {
    create(input: String, card: Card): Solution
-   get(id: Integer): Solution
    getCardSolutions(card: Card): List<Solution>
-
+   getSessionCardSolutions(card: Card): List<Solution>
 }
+
+class DbSolutionLibrary {
+   create(input: String, card: Card): Solution
+   getCardSolutions(card: Card): List<Solution>
+   getSessionCardSolutions(card: Card): List<Solution>
+}
+
+DbSolutionLibrary ..|> SolutionLibrary
 
 interface CardPicker {
    getCard(): Card
@@ -35,19 +53,26 @@ class SpacedRepetitionCardPicker {
    getCard(): Card
 }
 
-interface InputAnalyzer {
-   analyzeInput(card: Card, input: Strinf): String
+interface SolutionReportGenerator {
+   generateReport(card: Card, input: String): String
 }
 
-class IsOkAnalyzer {
-   analyzeInput(card: Card, input: Strinf): String
+class IsOkReportGenerator {
+   generateReport(card: Card, input: String): String
 }
+
+class InputHandler {
+   reportGenerator: SolutionReportGenerator
+   handleInput(card: Card, input: String): String
+}
+
+
 interface Callable {
 call(): Integer
 }
 
 class ConsoleWorker {
-analyzer: InputAnalyzer
+handler: InputHandler
 picker: CardPicker
 call(): Integer
 
@@ -62,12 +87,13 @@ Card"1" o-- "*" Solution
 
 Card --> CardPicker
 Card --> CardLibrary
-Card --> InputAnalyzer
+Card --> InputHandler
 Card --> SolutionLibrary
+Card --> SolutionReportGenerator
 Solution --> SolutionLibrary
-IsOkAnalyzer ..|> InputAnalyzer
-
- InputAnalyzer --> ConsoleWorker 
+IsOkReportGenerator ..|> SolutionReportGenerator
+SolutionReportGenerator --> InputHandler
+ InputHandler --> ConsoleWorker 
  CardPicker --> ConsoleWorker 
 
 
