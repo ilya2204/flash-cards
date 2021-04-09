@@ -15,6 +15,7 @@ public class ConsoleWorker implements Callable<Integer> {
 
   @Override
   public Integer call() {
+    System.out.println("Waiting for commands");
     String s;
     while (in.hasNextLine()) {
       s = in.nextLine();
