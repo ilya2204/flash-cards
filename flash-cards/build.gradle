@@ -5,6 +5,10 @@ plugins {
 group 'org.example'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'application'
+
+mainClassName = 'ConsoleWorker'
+
 repositories {
     mavenCentral()
 }
@@ -16,4 +20,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+run{
+    standardInput = System.in
 }

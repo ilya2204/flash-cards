@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryCardLibrary implements CardLibrary{
+public class InMemoryCardLibrary implements CardLibrary {
   static int counter = 0;
 
   Map<Integer, Card> cards = new HashMap<>();

@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
@@ -5,10 +6,14 @@ import java.util.concurrent.Callable;
 // знаем, что код плохой, исправим на нормальный)) (торопились выкатить релиз)
 public class ConsoleWorker implements Callable<Integer> {
 
-  CardLibrary cardLibrary;
+  final CardLibrary cardLibrary;
+  final CardPicker picker;
+  final InputHandler handler;
 
-  ConsoleWorker(CardLibrary cardLibrary) {
+  ConsoleWorker(CardLibrary cardLibrary, CardPicker picker, InputHandler handler) {
     this.cardLibrary = cardLibrary;
+    this.picker = picker;
+    this.handler = handler;
   }
 
   Scanner in = new Scanner(System.in);
@@ -19,15 +24,38 @@ public class ConsoleWorker implements Callable<Integer> {
     String s;
     while (in.hasNextLine()) {
       s = in.nextLine();
-      if (s.equals("add card")) {
-        addCard();
-      } else if (s.equals("get all cards")) {
-        getAllCards();
-      } else {
-        System.out.println("Unknown command: \"" + s + "\"");
+      switch (s.toLowerCase(Locale.ROOT)) {
+        case "add card": {
+          addCard();
+        }
+        case "get all cards": {
+          getAllCards();
+        }
+        case "get card": {
+          getCard();
+        }
+        default: {
+          System.out.println("Unknown command: \"" + s + "\"");
+        }
       }
     }
     return 1;
+  }
+
+  private void getCard() {
+    Card card = picker.getCard();
+    System.out.println("Card: " + card.input);
+    while (in.hasNextLine()) {
+      String userInput = in.nextLine();
+      String report = handler.handleInput(card, userInput);
+      if (report == null) {
+        System.out.println("You enter correct solution!");
+        break;
+      }
+      System.out.println(report);
+      System.out.println("Try again");
+    }
+
   }
 
   private void addCard() {
@@ -53,7 +81,10 @@ public class ConsoleWorker implements Callable<Integer> {
 
   public static void main(String[] args) {
     CardLibrary cardLibrary = new InMemoryCardLibrary();
-    ConsoleWorker consoleWorker = new ConsoleWorker(cardLibrary);
+    SolutionLibrary solutionLibrary = new InMemorySolutionLibrary();
+    InputHandler handler = new InputHandler(new IsOkReportGenerator(), solutionLibrary);
+    CardPicker picker = new SpacedRepetitionCardPicker(cardLibrary);
+    ConsoleWorker consoleWorker = new ConsoleWorker(cardLibrary, picker, handler);
     consoleWorker.call();
   }
 }

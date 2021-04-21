@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Card {
+class Card {
   public String input;
   public String output;
 

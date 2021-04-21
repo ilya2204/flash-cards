@@ -1,3 +1,3 @@
-public interface CardPicker {
-
+interface CardPicker {
+  Card getCard();
 }
