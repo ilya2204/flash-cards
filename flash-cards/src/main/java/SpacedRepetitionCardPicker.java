@@ -38,25 +38,30 @@ public class SpacedRepetitionCardPicker implements CardPicker {
     if (cardLibrary.getActiveCards().size() == 0) {
       return null;
     }
+
     List<Solution> allSolutions = solutionLibrary.getAllSolutions();
     Map<Card, Float> mistakesCount = new HashMap<>();
     Collection<Card> cards = cardLibrary.getActiveCards().values();
+
     cards.forEach(card -> {
       List<Solution> solution = solutionLibrary.getCardSolutions(card);
       Float mistakesCnt = (float) solution.stream()
           .filter(solution1 -> !solution1.result.equals(card.input)).count() / solution.size();
       mistakesCount.put(card, mistakesCnt);
     });
+
     System.out.println("mistakesCount: " + mistakesCount);
     Comparator<? super java.util.Map.Entry<Card, Float>> comparator = Comparator
         .comparing(Entry::getValue);
 
     Card card = mistakesCount.entrySet().stream().max(comparator).get().getKey();
+
     if (allSolutions.size() > 0) {
       if (allSolutions.get(allSolutions.size() - 1).card.equals(card)) {
         return cardLibrary.getRandom();
       }
     }
+
     return card;
   }
 }
