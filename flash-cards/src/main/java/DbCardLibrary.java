@@ -23,6 +23,16 @@ public class DbCardLibrary implements CardLibrary {
   }
 
   @Override
+  public Card getRandom() {
+    return null;
+  }
+
+  @Override
+  public Card get(String input) {
+    return null;
+  }
+
+  @Override
   public Map<Integer, Card> getActiveCards() {
     return null;
   }

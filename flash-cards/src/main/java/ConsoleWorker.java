@@ -3,7 +3,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
-// знаем, что код плохой, исправим на нормальный)) (торопились выкатить релиз)
+
 public class ConsoleWorker implements Callable<Integer> {
 
   final CardLibrary cardLibrary;
@@ -27,12 +27,15 @@ public class ConsoleWorker implements Callable<Integer> {
       switch (s.toLowerCase(Locale.ROOT)) {
         case "add card": {
           addCard();
+          break;
         }
         case "get all cards": {
           getAllCards();
+          break;
         }
         case "get card": {
           getCard();
+          break;
         }
         default: {
           System.out.println("Unknown command: \"" + s + "\"");
@@ -61,11 +64,17 @@ public class ConsoleWorker implements Callable<Integer> {
   private void addCard() {
     String input, output;
     System.out.println("Enter card input");
-    input = in.nextLine();
+    input = in.nextLine().toLowerCase(Locale.ROOT).trim();
     System.out.println("Enter card output");
-    output = in.nextLine();
+    output = in.nextLine().toLowerCase(Locale.ROOT).trim();
 
-    Card card = this.cardLibrary.create(input, output);
+    Card card = this.cardLibrary.get(input);
+    if (card != null) {
+      System.out.println("Card already exists: " + card);
+      return;
+    }
+
+    card = this.cardLibrary.create(input, output);
 
     System.out.println("Card created: " + card);
 
@@ -83,7 +92,7 @@ public class ConsoleWorker implements Callable<Integer> {
     CardLibrary cardLibrary = new InMemoryCardLibrary();
     SolutionLibrary solutionLibrary = new InMemorySolutionLibrary();
     InputHandler handler = new InputHandler(new IsOkReportGenerator(), solutionLibrary);
-    CardPicker picker = new SpacedRepetitionCardPicker(cardLibrary);
+    CardPicker picker = new SpacedRepetitionCardPicker(cardLibrary, solutionLibrary);
     ConsoleWorker consoleWorker = new ConsoleWorker(cardLibrary, picker, handler);
     consoleWorker.call();
   }

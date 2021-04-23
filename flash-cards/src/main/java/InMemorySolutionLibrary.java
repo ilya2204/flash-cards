@@ -19,11 +19,16 @@ public class InMemorySolutionLibrary implements SolutionLibrary {
 
   @Override
   public List<Solution> getCardSolutions(Card card) {
-    return solutions.stream().filter(solution -> solution.card == card).collect(Collectors.toList());
+    return solutions.stream().filter(solution -> solution.card.equals(card)).collect(Collectors.toList());
   }
 
   @Override
   public List<Solution> getSessionCardSolutions(Card card) {
     return getCardSolutions(card);
+  }
+
+  @Override
+  public List<Solution> getAllSolutions() {
+    return solutions;
   }
 }

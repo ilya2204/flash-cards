@@ -8,10 +8,8 @@ public class InMemoryCardLibrary implements CardLibrary {
 
   @Override
   public Card create(String input, String output) {
-    counter++;
     Card card = new Card(input, output);
-    cards.put(counter, card);
-
+    cards.put(counter++, card);
     return card;
   }
 
@@ -35,6 +33,25 @@ public class InMemoryCardLibrary implements CardLibrary {
   @Override
   public Card get(Integer id) {
     return cards.get(id);
+  }
+
+  @Override
+  public Card getRandom() {
+    if (counter == 0) {
+      return null;
+    }
+    int r = (int) (Math.random() * counter);
+    return cards.get(r);
+  }
+
+  @Override
+  public Card get(String input) {
+    for (Card card : getActiveCards().values()) {
+      if (card.input.equals(input)) {
+        return card;
+      }
+    }
+    return null;
   }
 
   @Override

@@ -1,3 +1,12 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 public class SpacedRepetitionCardPicker implements CardPicker {
 
   final CardLibrary cardLibrary;
@@ -26,6 +35,28 @@ public class SpacedRepetitionCardPicker implements CardPicker {
 
   @Override
   public Card getCard() {
-    return cardLibrary.get(0);
+    if (cardLibrary.getActiveCards().size() == 0) {
+      return null;
+    }
+    List<Solution> allSolutions = solutionLibrary.getAllSolutions();
+    Map<Card, Float> mistakesCount = new HashMap<>();
+    Collection<Card> cards = cardLibrary.getActiveCards().values();
+    cards.forEach(card -> {
+      List<Solution> solution = solutionLibrary.getCardSolutions(card);
+      Float mistakesCnt = (float) solution.stream()
+          .filter(solution1 -> !solution1.result.equals(card.input)).count() / solution.size();
+      mistakesCount.put(card, mistakesCnt);
+    });
+    System.out.println("mistakesCount: " + mistakesCount);
+    Comparator<? super java.util.Map.Entry<Card, Float>> comparator = Comparator
+        .comparing(Entry::getValue);
+
+    Card card = mistakesCount.entrySet().stream().max(comparator).get().getKey();
+    if (allSolutions.size() > 0) {
+      if (allSolutions.get(allSolutions.size() - 1).card.equals(card)) {
+        return cardLibrary.getRandom();
+      }
+    }
+    return card;
   }
 }

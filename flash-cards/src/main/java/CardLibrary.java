@@ -9,6 +9,9 @@ public interface CardLibrary {
 
   public Card get(Integer id);
 
+  public Card getRandom();
+
+  public Card get(String input);
 
   public Map<Integer, Card> getActiveCards();
 }
