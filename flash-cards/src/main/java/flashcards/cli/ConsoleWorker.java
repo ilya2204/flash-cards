@@ -2,13 +2,10 @@ package flashcards.cli;
 
 import flashcards.models.card.Card;
 import flashcards.models.card.CardLibrary;
-import flashcards.workers.CardPicker;
+import flashcards.workers.*;
 import flashcards.models.card.InMemoryCardLibrary;
 import flashcards.models.solution.InMemorySolutionLibrary;
 import flashcards.models.solution.SolutionLibrary;
-import flashcards.workers.InputHandler;
-import flashcards.workers.IsOkReportGenerator;
-import flashcards.workers.MostMistakeCardPicker;
 
 import java.util.Locale;
 import java.util.Map;
@@ -55,19 +52,29 @@ public class ConsoleWorker implements Callable<Integer> {
   }
 
   private void startTraining() {
+    trainNumber++;
     Card card = picker.getCard();
-    System.out.println("flashcards.Card: " + card.input);
+    if (card == null) {
+      System.out.println("No active cards. Create card and try again.");
+      return;
+    }
 
-    while (in.hasNextLine()) {
+    while (card != null) {
+      System.out.println(card);
+      System.out.println("Enter solution:");
       String userInput = in.nextLine();
       String report = handler.handleInput(card, userInput);
+      picker.postAnalyzingCallback(card);
       if (report == null) {
         System.out.println("You enter correct solution!");
         break;
       }
       System.out.println(report);
-      System.out.println("Try again");
+      System.out.println("Showing next card");
+
+      card = picker.getCard();
     }
+    System.out.println("flashcards.Card: " + card.input);
   }
 
   private void getCard() {
@@ -106,7 +113,7 @@ public class ConsoleWorker implements Callable<Integer> {
     CardLibrary cardLibrary = new InMemoryCardLibrary();
     SolutionLibrary solutionLibrary = new InMemorySolutionLibrary();
     InputHandler handler = new InputHandler(new IsOkReportGenerator(), solutionLibrary);
-    CardPicker picker = new MostMistakeCardPicker(cardLibrary, solutionLibrary);
+    CardPicker picker = new SpacedRepetitionCardPicker(cardLibrary, solutionLibrary);
     ConsoleWorker consoleWorker = new ConsoleWorker(cardLibrary, picker, handler);
     consoleWorker.call();
   }

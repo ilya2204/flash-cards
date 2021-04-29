@@ -14,8 +14,8 @@ public class InputHandler {
 
   public String handleInput(Card card, String input) {
     String report = reportGenerator.generateReport(card, input);
-    System.out.println("creating handleInput");
     library.create(input, card);
+
     return report;
   }
 }

@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class SpacedRepetitionCardPicker implements CardPicker {
 
   Integer bucketsCnt = 3;
-  Integer currentTraining = null;
+  Integer currentTraining = 0;
 
   CardLibrary cardLibrary;
   SolutionLibrary solutionLibrary;
