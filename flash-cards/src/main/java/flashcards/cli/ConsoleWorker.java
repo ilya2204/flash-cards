@@ -8,7 +8,7 @@ import flashcards.models.solution.InMemorySolutionLibrary;
 import flashcards.models.solution.SolutionLibrary;
 import flashcards.workers.InputHandler;
 import flashcards.workers.IsOkReportGenerator;
-import flashcards.workers.SpacedRepetitionCardPicker;
+import flashcards.workers.MostMistakeCardPicker;
 
 import java.util.Locale;
 import java.util.Map;
@@ -104,7 +104,7 @@ public class ConsoleWorker implements Callable<Integer> {
     CardLibrary cardLibrary = new InMemoryCardLibrary();
     SolutionLibrary solutionLibrary = new InMemorySolutionLibrary();
     InputHandler handler = new InputHandler(new IsOkReportGenerator(), solutionLibrary);
-    CardPicker picker = new SpacedRepetitionCardPicker(cardLibrary, solutionLibrary);
+    CardPicker picker = new MostMistakeCardPicker(cardLibrary, solutionLibrary);
     ConsoleWorker consoleWorker = new ConsoleWorker(cardLibrary, picker, handler);
     consoleWorker.call();
   }
