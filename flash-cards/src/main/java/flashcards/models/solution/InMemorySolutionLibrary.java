@@ -4,8 +4,11 @@ package flashcards.models.solution;
 import flashcards.models.card.Card;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemorySolutionLibrary implements SolutionLibrary {
 
@@ -23,17 +26,24 @@ public class InMemorySolutionLibrary implements SolutionLibrary {
   }
 
   @Override
-  public List<Solution> getCardSolutions(Card card) {
-    return solutions.stream().filter(solution -> solution.card.equals(card)).collect(Collectors.toList());
+  public Stream<Solution> getCardSolutions(Card card) {
+    return solutions.stream().filter(solution -> solution.card.equals(card));
   }
 
   @Override
-  public List<Solution> getSessionCardSolutions(Card card) {
+  public Stream<Solution> getSessionCardSolutions(Card card) {
     return getCardSolutions(card);
   }
 
   @Override
-  public List<Solution> getAllSolutions() {
-    return solutions;
+  public Stream<Solution> getAllSolutions() {
+    return solutions.stream();
   }
+
+  @Override
+  public int getLastSolutionTrainNumber(Card card) {
+    Optional<Solution> max = getCardSolutions(card).max(Comparator.comparing(a -> a.trainNumber));
+    return max.isPresent() ? max.get().trainNumber : -1;
+  }
+
 }

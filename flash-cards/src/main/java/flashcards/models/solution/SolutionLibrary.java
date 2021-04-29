@@ -3,10 +3,13 @@ package flashcards.models.solution;
 import flashcards.models.card.Card;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface SolutionLibrary {
   Solution create(String input, Card card);
-  List<Solution> getCardSolutions(Card card);
-  List<Solution> getSessionCardSolutions(Card card);
-  List<Solution> getAllSolutions();
+  Stream<Solution> getCardSolutions(Card card);
+  Stream<Solution> getSessionCardSolutions(Card card);
+  Stream<Solution> getAllSolutions();
+
+  int getLastSolutionTrainNumber(Card card);
 }

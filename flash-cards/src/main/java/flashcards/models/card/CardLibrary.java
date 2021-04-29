@@ -1,19 +1,28 @@
 package flashcards.models.card;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 public interface CardLibrary {
-  public Card create(String input, String output);
+  Card create(String input, String output);
 
-  public Card update(Integer id, String input, String output);
+  Card update(Integer id, String input, String output);
 
-  public void delete(Integer id);
+  void delete(Integer id);
 
-  public Card get(Integer id);
+  Card get(Integer id);
 
-  public Card getRandom();
+  Card getRandom();
 
-  public Card get(String input);
+  Card get(String input);
 
-  public Map<Integer, Card> getActiveCards();
+  Map<Integer, Card> getActiveCards();
+
+  Integer getBucket(Card card);
+
+  Stream<Card> getCardsInBucket(Integer bucketNumber);
+
+  void moveToNextBucket(Card card);
+
+  void moveToPrevBucket(Card card);
 }

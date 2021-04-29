@@ -5,16 +5,21 @@ import flashcards.models.card.CardLibrary;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 public class InMemoryCardLibrary implements CardLibrary {
+
   static int counter = 0;
 
   Map<Integer, Card> cards = new HashMap<>();
+  Map<Card, Integer> cardsBucket = new HashMap<>();
 
   @Override
   public Card create(String input, String output) {
     Card card = new Card(input, output);
     cards.put(counter++, card);
+    cardsBucket.put(card, 1);
     return card;
   }
 
@@ -32,7 +37,8 @@ public class InMemoryCardLibrary implements CardLibrary {
 
   @Override
   public void delete(Integer id) {
-    cards.remove(id);
+    Card card = cards.remove(id);
+    cardsBucket.remove(card);
   }
 
   @Override
@@ -63,4 +69,30 @@ public class InMemoryCardLibrary implements CardLibrary {
   public Map<Integer, Card> getActiveCards() {
     return cards;
   }
+
+  @Override
+  public Integer getBucket(Card card) {
+    return cardsBucket.get(card);
+  }
+
+  @Override
+  public Stream<Card> getCardsInBucket(Integer bucketNumber) {
+    return cardsBucket.entrySet().stream().filter(entry -> entry.getValue().equals(bucketNumber))
+        .map(Entry::getKey);
+  }
+
+  @Override
+  public void moveToNextBucket(Card card) {
+    cardsBucket.merge(card, 1, Integer::sum);
+  }
+
+  @Override
+  public void moveToPrevBucket(Card card) {
+    Integer bucket = cardsBucket.get(card);
+    if (bucket == 1) {
+      return;
+    }
+    cardsBucket.put(card, bucket + 1);
+  }
+
 }

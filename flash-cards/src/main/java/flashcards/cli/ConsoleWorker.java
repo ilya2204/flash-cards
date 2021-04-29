@@ -2,7 +2,7 @@ package flashcards.cli;
 
 import flashcards.models.card.Card;
 import flashcards.models.card.CardLibrary;
-import flashcards.models.card.CardPicker;
+import flashcards.workers.CardPicker;
 import flashcards.models.card.InMemoryCardLibrary;
 import flashcards.models.solution.InMemorySolutionLibrary;
 import flashcards.models.solution.SolutionLibrary;
@@ -17,10 +17,10 @@ import java.util.concurrent.Callable;
 
 
 public class ConsoleWorker implements Callable<Integer> {
-
   final CardLibrary cardLibrary;
   final CardPicker picker;
   final InputHandler handler;
+  public static Integer trainNumber = 0;
 
   ConsoleWorker(CardLibrary cardLibrary, CardPicker picker, InputHandler handler) {
     this.cardLibrary = cardLibrary;
