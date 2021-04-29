@@ -10,8 +10,9 @@ public class Card {
   public String output;
   public int id;
 
-  public Card() {
-
+  public Card(String input, String output) {
+    this.input = input;
+    this.output = output;
   }
 
   public Card(String input, String output, int id) {
