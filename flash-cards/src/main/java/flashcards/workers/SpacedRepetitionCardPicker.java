@@ -61,22 +61,25 @@ public class SpacedRepetitionCardPicker implements CardPicker {
     }
 
     int currentBucket = cardLibrary.getBucket(card);
-    Solution solution;
-    for (int idx = 1; idx < solutions.size(); idx++) {
-
-      solution = solutions.get(solutions.size() - idx - 1);
-      Solution nextSolution = solutions.get(solutions.size() - idx);
-      int bucket = nextSolution.trainNumber - solution.trainNumber;
-      if (bucket != currentBucket) {
-        break;
-      }
+    int bucket = 1;
+    int corAns = 0;
+    for (Solution solution: solutions) {
       if (!solution.card.output.equals(solution.result)) {
-        break;
+        if (bucket != 1) {
+          --bucket;
+        }
+        corAns = 0;
+      } else {
+        corAns++;
+        if (corAns == bucket) {
+          bucket++;
+          corAns = 0;
+        }
       }
-      rightInRow++;
+
     }
 
-    if (rightInRow == currentBucket) {
+    if (bucket > currentBucket) {
       if (cardLibrary.moveToNextBucket(card) > bucketsCnt) {
         cardLibrary.delete(card.id);
       }

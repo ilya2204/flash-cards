@@ -114,12 +114,6 @@ public class ConsoleWorker implements Callable<Integer> {
     }
     System.out.println("Cards finished! You can start new training");
   }
-
-  private void getCard() {
-
-
-  }
-
   private void addCard() {
     String input, output;
     System.out.println("Enter card input");
