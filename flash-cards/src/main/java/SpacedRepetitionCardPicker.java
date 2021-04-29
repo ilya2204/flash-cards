@@ -46,13 +46,12 @@ public class SpacedRepetitionCardPicker implements CardPicker {
     cards.forEach(card -> {
       List<Solution> solution = solutionLibrary.getCardSolutions(card);
       Float mistakesCnt = (float) solution.stream()
-          .filter(solution1 -> !solution1.result.equals(card.input)).count() / solution.size();
+          .filter(solution1 -> !solution1.result.equals(card.output)).count() / solution.size();
       mistakesCount.put(card, mistakesCnt);
     });
 
     System.out.println("mistakesCount: " + mistakesCount);
-    Comparator<? super java.util.Map.Entry<Card, Float>> comparator = Comparator
-        .comparing(Entry::getValue);
+    Comparator<? super java.util.Map.Entry<Card, Float>> comparator = Entry.comparingByValue();
 
     Card card = mistakesCount.entrySet().stream().max(comparator).get().getKey();
 
