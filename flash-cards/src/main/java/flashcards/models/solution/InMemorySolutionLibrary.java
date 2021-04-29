@@ -2,12 +2,10 @@ package flashcards.models.solution;
 
 
 import flashcards.models.card.Card;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class InMemorySolutionLibrary implements SolutionLibrary {
@@ -37,7 +35,7 @@ public class InMemorySolutionLibrary implements SolutionLibrary {
 
   @Override
   public Stream<Solution> getAllSolutions() {
-    return solutions.stream();
+    return solutions.stream().sorted(Comparator.comparing(a->a.trainNumber));
   }
 
   @Override

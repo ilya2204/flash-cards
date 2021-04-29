@@ -28,7 +28,7 @@ public class SpacedRepetitionCardPicker implements CardPicker {
 
 
 
-  private Stream<Card> cardsForCurrentTraining() {
+  public Stream<Card> cardsForCurrentTraining() {
     return IntStream.rangeClosed(1, bucketsCnt)
         .boxed()
         .filter(n -> ConsoleWorker.trainNumber % n == 0)
