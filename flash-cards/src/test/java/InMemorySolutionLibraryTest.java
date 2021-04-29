@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import flashcards.models.card.Card;
+import flashcards.models.solution.InMemorySolutionLibrary;
 import org.junit.jupiter.api.Test;
 
 class InMemorySolutionLibraryTest {

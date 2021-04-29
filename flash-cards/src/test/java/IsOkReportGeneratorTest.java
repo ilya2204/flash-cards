@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import flashcards.models.card.Card;
+import flashcards.workers.IsOkReportGenerator;
 import org.junit.jupiter.api.Test;
 
 class IsOkReportGeneratorTest {

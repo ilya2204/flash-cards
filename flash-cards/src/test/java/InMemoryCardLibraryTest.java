@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import flashcards.models.card.Card;
+import flashcards.models.card.CardLibrary;
+import flashcards.models.card.InMemoryCardLibrary;
 import org.junit.jupiter.api.Test;
 
 class InMemoryCardLibraryTest {
@@ -35,7 +38,4 @@ class InMemoryCardLibraryTest {
     assertEquals(cardLibrary.get(0), card);
 
   }
-
-
-
 }
