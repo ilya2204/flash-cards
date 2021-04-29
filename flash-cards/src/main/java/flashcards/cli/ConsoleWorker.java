@@ -1,3 +1,15 @@
+package flashcards.cli;
+
+import flashcards.models.card.Card;
+import flashcards.models.card.CardLibrary;
+import flashcards.models.card.CardPicker;
+import flashcards.models.card.InMemoryCardLibrary;
+import flashcards.models.solution.InMemorySolutionLibrary;
+import flashcards.models.solution.SolutionLibrary;
+import flashcards.workers.InputHandler;
+import flashcards.workers.IsOkReportGenerator;
+import flashcards.workers.SpacedRepetitionCardPicker;
+
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
@@ -47,7 +59,7 @@ public class ConsoleWorker implements Callable<Integer> {
 
   private void getCard() {
     Card card = picker.getCard();
-    System.out.println("Card: " + card.input);
+    System.out.println("flashcards.Card: " + card.input);
     while (in.hasNextLine()) {
       String userInput = in.nextLine();
       String report = handler.handleInput(card, userInput);
@@ -70,13 +82,13 @@ public class ConsoleWorker implements Callable<Integer> {
 
     Card card = this.cardLibrary.get(input);
     if (card != null) {
-      System.out.println("Card already exists: " + card);
+      System.out.println("flashcards.Card already exists: " + card);
       return;
     }
 
     card = this.cardLibrary.create(input, output);
 
-    System.out.println("Card created: " + card);
+    System.out.println("flashcards.Card created: " + card);
 
   }
 

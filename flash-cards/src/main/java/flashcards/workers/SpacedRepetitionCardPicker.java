@@ -1,10 +1,14 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package flashcards.workers;
+
+import flashcards.models.card.Card;
+import flashcards.models.card.CardLibrary;
+import flashcards.models.card.CardPicker;
+import flashcards.models.card.InMemoryCardLibrary;
+import flashcards.models.solution.InMemorySolutionLibrary;
+import flashcards.models.solution.Solution;
+import flashcards.models.solution.SolutionLibrary;
+
+import java.util.*;
 import java.util.Map.Entry;
 
 public class SpacedRepetitionCardPicker implements CardPicker {

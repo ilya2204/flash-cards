@@ -1,3 +1,5 @@
+package flashcards.models.card;
+
 import java.util.Map;
 
 public class DbCardLibrary implements CardLibrary {

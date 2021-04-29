@@ -1,3 +1,8 @@
+package flashcards.models.card;
+
+import flashcards.models.card.Card;
+import flashcards.models.card.CardLibrary;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,7 +1,11 @@
+package flashcards.models.card;
+
+import flashcards.models.solution.Solution;
+
 import java.util.List;
 import java.util.Objects;
 
-class Card {
+public class Card {
   public String input;
   public String output;
 
@@ -20,7 +24,7 @@ class Card {
 
   @Override
   public String toString() {
-    return "Card{" +
+    return "flashcards.models.card.Card{" +
         "input='" + input + '\'' +
         ", output='" + output + '\'' +
         '}';

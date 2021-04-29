@@ -1,3 +1,7 @@
+package flashcards.models.solution;
+
+import flashcards.models.card.Card;
+
 import java.util.Date;
 
 public class Solution {

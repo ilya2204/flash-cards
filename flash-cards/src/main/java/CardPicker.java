@@ -1,3 +1,0 @@
-interface CardPicker {
-  Card getCard();
-}
