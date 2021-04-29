@@ -22,7 +22,7 @@ public interface CardLibrary {
 
   Stream<Card> getCardsInBucket(Integer bucketNumber);
 
-  void moveToNextBucket(Card card);
+  int moveToNextBucket(Card card);
 
-  void moveToPrevBucket(Card card);
+  int moveToPrevBucket(Card card);
 }

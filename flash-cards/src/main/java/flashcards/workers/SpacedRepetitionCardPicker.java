@@ -1,14 +1,11 @@
 package flashcards.workers;
 
-import flashcards.models.card.Card;
-import flashcards.workers.CardPicker;
-
-
 import flashcards.cli.ConsoleWorker;
 import flashcards.models.card.Card;
 import flashcards.models.card.CardLibrary;
 import flashcards.models.solution.Solution;
 import flashcards.models.solution.SolutionLibrary;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,23 +51,35 @@ public class SpacedRepetitionCardPicker implements CardPicker {
   public void postAnalyzingCallback(Card card) {
     List<Solution> solutions = solutionLibrary.getCardSolutions(card).collect(Collectors.toList());
     Solution lastSolution = solutions.get(solutions.size() - 1);
+
+    int rightInRow = 0;
+
     if (!lastSolution.card.output.equals(lastSolution.result)) {
       cardLibrary.moveToPrevBucket(card);
+    } else {
+      rightInRow++;
     }
 
-    int bucket = cardLibrary.getBucket(card), rightInRow = 0;
+    int currentBucket = cardLibrary.getBucket(card);
     Solution solution;
-    for (int idx = 0; idx < solutions.size(); idx++) {
+    for (int idx = 1; idx < solutions.size(); idx++) {
+
       solution = solutions.get(solutions.size() - idx - 1);
+      Solution nextSolution = solutions.get(solutions.size() - idx);
+      int bucket = nextSolution.trainNumber - solution.trainNumber;
+      if (bucket != currentBucket) {
+        break;
+      }
       if (!solution.card.output.equals(solution.result)) {
         break;
       }
       rightInRow++;
     }
 
-    if (rightInRow == bucket) {
-//      if (b)
-      cardLibrary.moveToNextBucket(card);
+    if (rightInRow == currentBucket) {
+      if (cardLibrary.moveToNextBucket(card) > bucketsCnt) {
+        cardLibrary.delete(card.id);
+      }
     }
   }
 

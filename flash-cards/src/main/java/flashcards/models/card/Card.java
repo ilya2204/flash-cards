@@ -8,14 +8,16 @@ import java.util.Objects;
 public class Card {
   public String input;
   public String output;
+  public int id;
 
   public Card() {
 
   }
 
-  public Card(String input, String output) {
+  public Card(String input, String output, int id) {
     this.input = input;
     this.output = output;
+    this.id = id;
   }
 
   public List<Solution> getSolutions() {

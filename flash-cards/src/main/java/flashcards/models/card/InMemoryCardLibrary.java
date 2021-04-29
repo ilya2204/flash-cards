@@ -1,8 +1,5 @@
 package flashcards.models.card;
 
-import flashcards.models.card.Card;
-import flashcards.models.card.CardLibrary;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,7 +14,7 @@ public class InMemoryCardLibrary implements CardLibrary {
 
   @Override
   public Card create(String input, String output) {
-    Card card = new Card(input, output);
+    Card card = new Card(input, output, counter);
     cards.put(counter++, card);
     cardsBucket.put(card, 1);
     return card;
@@ -82,17 +79,17 @@ public class InMemoryCardLibrary implements CardLibrary {
   }
 
   @Override
-  public void moveToNextBucket(Card card) {
-    cardsBucket.merge(card, 1, Integer::sum);
+  public int moveToNextBucket(Card card) {
+    return cardsBucket.merge(card, 1, Integer::sum);
   }
 
   @Override
-  public void moveToPrevBucket(Card card) {
+  public int moveToPrevBucket(Card card) {
     Integer bucket = cardsBucket.get(card);
     if (bucket == 1) {
-      return;
+      return 1;
     }
-    cardsBucket.put(card, bucket + 1);
+    return cardsBucket.put(card, bucket - 1);
   }
 
 }

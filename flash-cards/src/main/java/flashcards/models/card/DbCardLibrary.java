@@ -51,12 +51,12 @@ public class DbCardLibrary implements CardLibrary {
   }
 
   @Override
-  public void moveToNextBucket(Card card) {
-
+  public int moveToNextBucket(Card card) {
+    return -1;
   }
 
   @Override
-  public void moveToPrevBucket(Card card) {
-
+  public int moveToPrevBucket(Card card) {
+    return -1;
   }
 }

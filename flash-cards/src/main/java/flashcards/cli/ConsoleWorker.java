@@ -37,19 +37,16 @@ public class ConsoleWorker implements Callable<Integer> {
     while (in.hasNextLine()) {
       s = in.nextLine();
       switch (s.toLowerCase(Locale.ROOT)) {
-        case "add card": {
+        case "add card" -> {
           addCard();
-          break;
         }
-        case "get all cards": {
+        case "get all cards" -> {
           getAllCards();
-          break;
         }
-        case "get card": {
-          getCard();
-          break;
+        case "start training" -> {
+          startTraining();
         }
-        default: {
+        default -> {
           System.out.println("Unknown command: \"" + s + "\"");
         }
       }
@@ -57,9 +54,10 @@ public class ConsoleWorker implements Callable<Integer> {
     return 1;
   }
 
-  private void getCard() {
+  private void startTraining() {
     Card card = picker.getCard();
     System.out.println("flashcards.Card: " + card.input);
+
     while (in.hasNextLine()) {
       String userInput = in.nextLine();
       String report = handler.handleInput(card, userInput);
@@ -70,6 +68,10 @@ public class ConsoleWorker implements Callable<Integer> {
       System.out.println(report);
       System.out.println("Try again");
     }
+  }
+
+  private void getCard() {
+
 
   }
 
