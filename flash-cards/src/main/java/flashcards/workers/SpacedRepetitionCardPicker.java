@@ -1,14 +1,8 @@
-//package flashcards.workers;
-//
-//import flashcards.models.card.Card;
-//import flashcards.models.card.CardPicker;
-//
-//public class SpacedRepetitionCardPicker implements CardPicker {
-//  @Override
-//  public Card getCard() {
-//
-//  }
-//}
+package flashcards.workers;
+
+import flashcards.models.card.Card;
+import flashcards.workers.CardPicker;
+
 
 import flashcards.cli.ConsoleWorker;
 import flashcards.models.card.Card;
