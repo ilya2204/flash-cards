@@ -4,7 +4,12 @@ import flashcards.models.card.Card;
 import flashcards.models.card.CardLibrary;
 import flashcards.models.card.InMemoryCardLibrary;
 import flashcards.models.solution.InMemorySolutionLibrary;
+import flashcards.models.solution.Solution;
 import flashcards.models.solution.SolutionLibrary;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MostMistakeCardPicker implements CardPicker {
 
@@ -34,34 +39,34 @@ public class MostMistakeCardPicker implements CardPicker {
 
   @Override
   public Card getCard() {
-    return null;
-//    if (cardLibrary.getActiveCards().size() == 0) {
-//      return null;
-//    }
+    if (cardLibrary.getActiveCards().size() == 0) {
+      return null;
+    }
 
-//    List<Solution> allSolutions = solutionLibrary.getAllSolutions();
-//    Map<Card, Float> mistakesCount = new HashMap<>();
-//    Collection<Card> cards = cardLibrary.getActiveCards().values();
-//
-//    cards.forEach(card -> {
-//      List<Solution> solution = solutionLibrary.getCardSolutions(card);
-//      Float mistakesCnt = (float) solution.stream()
-//          .filter(solution1 -> !solution1.result.equals(card.output)).count() / solution.size();
-//      mistakesCount.put(card, mistakesCnt);
-//    });
-//
-//    System.out.println("mistakesCount: " + mistakesCount);
-//    Comparator<? super java.util.Map.Entry<Card, Float>> comparator = Entry.comparingByValue();
-//
-//    Card card = mistakesCount.entrySet().stream().max(comparator).get().getKey();
-//
-//    if (allSolutions.size() > 0) {
-//      if (allSolutions.get(allSolutions.size() - 1).card.equals(card)) {
-//        return cardLibrary.getRandom();
-//      }
-//    }
-//
-//    return card;
+    Stream<Solution> allSolutions = solutionLibrary.getAllSolutions();
+    Map<Card, Float> mistakesCount = new HashMap<>();
+    Collection<Card> cards = cardLibrary.getActiveCards().values();
+
+    cards.forEach(card -> {
+      Stream<Solution> solution = solutionLibrary.getCardSolutions(card);
+      Float mistakesCnt = (float) solution
+          .filter(solution1 -> !solution1.result.equals(card.output)).count() / solution.count();
+      mistakesCount.put(card, mistakesCnt);
+    });
+
+    System.out.println("mistakesCount: " + mistakesCount);
+    Comparator<? super Map.Entry<Card, Float>> comparator = Map.Entry.comparingByValue();
+
+    Card card = mistakesCount.entrySet().stream().max(comparator).get().getKey();
+
+    if (allSolutions.count() > 0) {
+
+      if (allSolutions.collect(Collectors.toList()).get((int) (allSolutions.count() - 1)).card.equals(card)) {
+        return cardLibrary.getRandom();
+      }
+    }
+
+    return card;
   }
 
   @Override

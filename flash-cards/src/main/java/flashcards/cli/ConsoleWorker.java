@@ -15,9 +15,9 @@ import java.util.concurrent.Callable;
 
 public class ConsoleWorker implements Callable<Integer> {
   final CardLibrary cardLibrary;
-  final CardPicker picker;
+  CardPicker picker;
   final InputHandler handler;
-  public static Integer trainNumber = 0;
+  public static Integer trainNumber = 17;
 
   ConsoleWorker(CardLibrary cardLibrary, CardPicker picker, InputHandler handler) {
     this.cardLibrary = cardLibrary;
@@ -37,6 +37,9 @@ public class ConsoleWorker implements Callable<Integer> {
         case "add card" -> {
           addCard();
         }
+        case "switch picker" -> {
+          switchPicker();
+        }
         case "get all cards" -> {
           getAllCards();
         }
@@ -47,19 +50,54 @@ public class ConsoleWorker implements Callable<Integer> {
           System.out.println("Unknown command: \"" + s + "\"");
         }
       }
+      System.out.println("Enter next command");
     }
     return 1;
+  }
+
+  private void switchPicker() {
+    System.out.println("Options:");
+    int index = 1;
+    if (picker instanceof MostMistakeCardPicker) {
+      index++;
+    }
+    System.out.println("1. SpacedRepetitionCardPicker " + (index == 1 ? "(picked)" : ""));
+    System.out.println("2. MostMistakeCardPicker " + (index == 2 ? "(picked)" : ""));
+    System.out.println("Enter picker number");
+    String number = in.nextLine();
+    if (number.equals("1") || number.equals("1.")) {
+      if (index == 1) {
+        System.out.println("This option is picked already");
+      } else {
+        picker = new SpacedRepetitionCardPicker(cardLibrary, handler.library);
+        System.out.println("Picker changed successful");
+      }
+      return;
+    }
+    if (number.equals("2") || number.equals("2.")) {
+      if (index == 2) {
+        System.out.println("This option is picked already");
+      } else {
+        picker = new MostMistakeCardPicker(cardLibrary, handler.library);
+        System.out.println("Picker changed successful");
+      }
+      return;
+    }
+    System.out.println("You enter invalid number");
   }
 
   private void startTraining() {
     trainNumber++;
     Card card = picker.getCard();
     if (card == null) {
-      System.out.println("No active cards. Create card and try again.");
+      System.out.println("No cards for this training. You can start new training or create new card");
       return;
     }
 
-    while (card != null) {
+    for (int i = 0; i < cardLibrary.getActiveCards().size(); i++) {
+      if (card == null) {
+        break;
+      }
       System.out.println(card);
       System.out.println("Enter solution:");
       String userInput = in.nextLine();
@@ -74,7 +112,7 @@ public class ConsoleWorker implements Callable<Integer> {
 
       card = picker.getCard();
     }
-    System.out.println("flashcards.Card: " + card.input);
+    System.out.println("Cards finished! You can start new training");
   }
 
   private void getCard() {

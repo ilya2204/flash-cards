@@ -5,7 +5,7 @@ import flashcards.models.solution.SolutionLibrary;
 
 public class InputHandler {
   final private SolutionReportGenerator reportGenerator;
-  final private SolutionLibrary library;
+  final public SolutionLibrary library;
 
   public InputHandler(SolutionReportGenerator reportGenerator, SolutionLibrary library) {
     this.reportGenerator = reportGenerator;
