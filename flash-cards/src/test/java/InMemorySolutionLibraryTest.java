@@ -9,6 +9,7 @@ class InMemorySolutionLibraryTest {
 
   @Test
   void mainTest() {
+    ConsoleWorker.trainNumber = 1;
     InMemorySolutionLibrary solutionLibrary = new InMemorySolutionLibrary();
     Card card1 = new Card("test card", "for library");
     Card card2 = new Card("second test card", "test for library");
@@ -28,7 +29,7 @@ class InMemorySolutionLibraryTest {
     assertEquals(1, solutionLibrary.getCardSolutions(card2).count());
 
 
-    assertEquals(0, solutionLibrary.getLastSolutionTrainNumber(card1));
+    assertEquals(1, solutionLibrary.getLastSolutionTrainNumber(card1));
 
     ConsoleWorker.trainNumber = 322;
 

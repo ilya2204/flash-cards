@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public class InMemoryCardLibrary implements CardLibrary {
 
-  static int counter = 0;
+  int counter = 0;
 
   Map<Integer, Card> cards = new HashMap<>();
   Map<Card, Integer> cardsBucket = new HashMap<>();

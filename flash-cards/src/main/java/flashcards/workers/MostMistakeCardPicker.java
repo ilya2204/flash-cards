@@ -48,9 +48,9 @@ public class MostMistakeCardPicker implements CardPicker {
     Collection<Card> cards = cardLibrary.getActiveCards().values();
 
     cards.forEach(card -> {
-      Stream<Solution> solution = solutionLibrary.getCardSolutions(card);
-      Float mistakesCnt = (float) solution
-          .filter(solution1 -> !solution1.result.equals(card.output)).count() / solution.count();
+      List<Solution> solution = solutionLibrary.getCardSolutions(card).collect(Collectors.toList());
+      Float mistakesCnt = (float) solution.stream()
+          .filter(solution1 -> !solution1.result.equals(card.output)).count() / solution.size();
       mistakesCount.put(card, mistakesCnt);
     });
 
