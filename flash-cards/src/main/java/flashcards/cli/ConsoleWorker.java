@@ -7,9 +7,7 @@ import flashcards.models.card.InMemoryCardLibrary;
 import flashcards.models.solution.InMemorySolutionLibrary;
 import flashcards.models.solution.SolutionLibrary;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 
@@ -37,6 +35,12 @@ public class ConsoleWorker implements Callable<Integer> {
         case "add card" -> {
           addCard();
         }
+        case "delete card" -> {
+          deleteCard();
+        }
+        case "update card" -> {
+          updateCard();
+        }
         case "switch picker" -> {
           switchPicker();
         }
@@ -53,6 +57,60 @@ public class ConsoleWorker implements Callable<Integer> {
       System.out.println("Enter next command");
     }
     return 1;
+  }
+
+  private void updateCard() {
+    Card card = pickCard();
+    if (card == null) {
+      System.out.println("You enter invalid number");
+    } else {
+      System.out.println("Enter new input (empty to store previous)");
+      String input = in.nextLine();
+      if (input.equals("")) {
+        input = card.input;
+      }
+      System.out.println("Enter new output (empty to store previous)");
+      String output = in.nextLine();
+      if (output.equals("")) {
+        output = card.output;
+      }
+      cardLibrary.update(card.id, input, output);
+      System.out.println("Card successful updated");
+    }
+  }
+
+  private void deleteCard() {
+    Card card = pickCard();
+    if (card == null) {
+      System.out.println("You enter invalid number");
+    } else {
+      cardLibrary.delete(card.id);
+      System.out.println("Card successful deleted");
+    }
+  }
+
+  private Card pickCard() {
+    Collection<Card> cards = cardLibrary.getActiveCards().values();
+
+    for (Card card: cards) {
+      System.out.println(((Integer)card.id).toString() + ". " + card.toString());
+    }
+
+    System.out.println("Enter card number");
+
+
+    int number;
+    try {
+      number = Integer.parseInt(in.nextLine());
+    } catch (NumberFormatException e) {
+      number = -1;
+    }
+    for (Card card: cards) {
+      if (card.id == number) {
+        return card;
+      }
+    }
+    return null;
   }
 
   private void switchPicker() {
@@ -98,7 +156,7 @@ public class ConsoleWorker implements Callable<Integer> {
       if (card == null) {
         break;
       }
-      System.out.println(card);
+      System.out.println("Card input: " + card.input);
       System.out.println("Enter solution:");
       String userInput = in.nextLine();
       String report = handler.handleInput(card, userInput);

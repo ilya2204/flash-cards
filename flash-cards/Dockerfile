@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11
+FROM adoptopenjdk/openjdk15
 COPY . /flash-cards/
 WORKDIR flash-cards
 RUN chmod +x entrypoint.sh
