@@ -21,21 +21,6 @@ public class MostMistakeCardPicker implements CardPicker {
     this.solutionLibrary = solutionLibrary;
   }
 
-  public MostMistakeCardPicker(SolutionLibrary solutionLibrary) {
-    this.cardLibrary = new InMemoryCardLibrary();
-    this.solutionLibrary = solutionLibrary;
-  }
-
-  public MostMistakeCardPicker(CardLibrary cardLibrary) {
-    this.cardLibrary = cardLibrary;
-    this.solutionLibrary = new InMemorySolutionLibrary();
-  }
-
-  public MostMistakeCardPicker() {
-    this.solutionLibrary = new InMemorySolutionLibrary();
-    this.cardLibrary = new InMemoryCardLibrary();
-  }
-
 
   @Override
   public Card getCard() {
@@ -69,8 +54,4 @@ public class MostMistakeCardPicker implements CardPicker {
     return card;
   }
 
-  @Override
-  public void postAnalyzingCallback(Card card) {
-
-  }
 }
