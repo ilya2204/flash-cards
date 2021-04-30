@@ -1,3 +1,5 @@
+package flashcards.models.solution;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import flashcards.cli.ConsoleWorker;

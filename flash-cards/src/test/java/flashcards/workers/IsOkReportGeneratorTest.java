@@ -1,3 +1,5 @@
+package flashcards.workers;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import flashcards.models.card.Card;
