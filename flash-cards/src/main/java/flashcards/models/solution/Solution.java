@@ -11,13 +11,6 @@ public class Solution {
   final public String result;
   final public Integer trainNumber;
 
-  public Solution(Date date, Card card, String result) {
-    this.date = date;
-    this.card = card;
-    this.result = result;
-    this.trainNumber = ConsoleWorker.trainNumber;
-  }
-
 
   public Solution(Card card, String result) {
     this.date = new Date(System.currentTimeMillis());
