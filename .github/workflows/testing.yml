@@ -14,11 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 15
-        working-directory: ./flash-cards
         uses: actions/setup-java@v2
         with:
           java-version: '15'
           distribution: 'adopt'
       - name: Build with Gradle
         working-directory: ./flash-cards
-        run: ./flash_cards/gradlew build
+        run: ./gradlew build
