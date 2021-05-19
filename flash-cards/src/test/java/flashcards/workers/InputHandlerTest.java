@@ -22,7 +22,7 @@ class InputHandlerTest {
 
     String report = solutionReportGenerator.generateReport(card1, trueRes);
 
-    assertEquals(report, inputHandler.handleInput(card1, "out"));
+    assertEquals(report, inputHandler.handleInput(card1, "ou"));
 
 
   }
