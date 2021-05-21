@@ -19,7 +19,6 @@ class InMemoryCardLibraryTest {
     cardLibrary.create(input, output);
     assertEquals(cardLibrary.getActiveCards().size(), 1);
 
-
     input = "input with spaces";
     output = "output with spaces";
     cardLibrary.create(input, output);
@@ -48,7 +47,6 @@ class InMemoryCardLibraryTest {
     String output = "output";
 
     Card card = cardLibrary.create(input, output);
-
 
     assertEquals(1, cardLibrary.getBucket(card));
 
@@ -96,7 +94,6 @@ class InMemoryCardLibraryTest {
     cardLibrary.moveToNextBucket(card2);
     assertEquals(2, cardLibrary.getCardsInBucket(1).count());
     assertEquals(2, cardLibrary.getCardsInBucket(2).count());
-
 
     cardLibrary.moveToNextBucket(card1);
     cardLibrary.moveToNextBucket(card2);
