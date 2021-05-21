@@ -61,7 +61,7 @@ class InMemoryCardLibraryTest {
     cardLibrary.moveToNextBucket(card);
     cardLibrary.moveToNextBucket(card);
 
-    assertEquals(4, cardLibrary.getBucket(card));
+    assertEquals(4 + 1, cardLibrary.getBucket(card));
 
     Card secondCard = cardLibrary.create(input, output);
 
